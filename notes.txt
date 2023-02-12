@@ -1,0 +1,3 @@
+- Cubit will be added
+- Design will be do
+- Clean architecture will be created
