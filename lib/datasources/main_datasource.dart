@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:open_weather_app/model/weather_model.dart';
 import 'package:http/http.dart' as http;
 
 import '../api_url.dart';

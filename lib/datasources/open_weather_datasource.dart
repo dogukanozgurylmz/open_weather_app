@@ -23,8 +23,9 @@ class OpenWeatherDatasource implements OpenWeatherDatasourceAbstract {
       id: json['id'],
       name: json['name'],
       cod: json['cod'],
+      dt: json['dt'],
     );
-    if (json == null) {
+    if (openWeatherModel == null) {
       throw Exception("Not Data");
     }
     return openWeatherModel;

@@ -6,6 +6,7 @@ class OpenWeatherModel {
   int? id;
   String? name;
   int? cod;
+  int? dt;
 
   OpenWeatherModel({
     required this.weather,
@@ -15,6 +16,7 @@ class OpenWeatherModel {
     required this.id,
     required this.name,
     required this.cod,
+    required this.dt,
   });
 
   OpenWeatherModel.fromJson(Map<String, dynamic> json) {
@@ -25,6 +27,7 @@ class OpenWeatherModel {
     id = json['id'];
     name = json['name'];
     cod = json['cod'];
+    dt = json['dt'];
   }
 
   Map<String, dynamic> toJson() {
@@ -42,6 +45,7 @@ class OpenWeatherModel {
     data['id'] = id;
     data['name'] = name;
     data['cod'] = cod;
+    data['dt'] = dt;
     return data;
   }
 }

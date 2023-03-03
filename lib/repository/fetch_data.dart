@@ -1,23 +1,17 @@
-import 'dart:convert';
-
-import 'package:open_weather_app/api_url.dart';
 import 'package:open_weather_app/datasources/main_datasource.dart';
 import 'package:open_weather_app/datasources/wind_datasource.dart';
 import 'package:open_weather_app/model/main_model.dart';
 import 'package:open_weather_app/model/open_weather_model.dart';
 import 'package:open_weather_app/model/weather_model.dart';
 import 'package:open_weather_app/model/wind_model.dart';
-
-import 'package:http/http.dart' as http;
-
 import '../datasources/open_weather_datasource.dart';
 import '../datasources/weather_datasource.dart';
 
 class FetchData {
-  late WeatherModel? weatherModel;
-  late MainModel? mainModel;
-  late WindModel? windModel;
-  late OpenWeatherModel? openWeatherModel;
+  WeatherModel? weatherModel;
+  MainModel? mainModel;
+  WindModel? windModel;
+  OpenWeatherModel? openWeatherModel;
 
   FetchData({
     this.openWeatherModel,
@@ -26,24 +20,40 @@ class FetchData {
     this.windModel,
   });
 
-  Future<void> fetchWeatherData() async {
+  Future<WeatherModel?> fetchWeatherData() async {
     WeatherDatasource weatherDatasource = WeatherDatasource();
     weatherModel = await weatherDatasource.getWeather();
+    if (weatherModel == null) {
+      throw Exception("Boş");
+    }
+    return weatherModel;
   }
 
-  Future<void> fetchOpenWeatherData() async {
+  Future<OpenWeatherModel?> fetchOpenWeatherData() async {
     OpenWeatherDatasource weatherDatasource = OpenWeatherDatasource();
     openWeatherModel = await weatherDatasource.getOpenWeather();
+    if (openWeatherModel == null) {
+      throw Exception("Boş");
+    }
+    return openWeatherModel;
   }
 
-  Future<void> fetchMainData() async {
+  Future<MainModel?> fetchMainData() async {
     MainDatasource mainDatasource = MainDatasource();
     mainModel = await mainDatasource.getMain();
+    if (mainModel == null) {
+      throw Exception("Boş");
+    }
+    return mainModel;
   }
 
-  Future<void> fetchWindData() async {
+  Future<WindModel?> fetchWindData() async {
     WindDatasource windDatasource = WindDatasource();
     windModel = await windDatasource.getWind();
+    if (windModel == null) {
+      throw Exception("Boş");
+    }
+    return windModel;
   }
 
   // Future<void> fetchOpenWeatherData() async {
