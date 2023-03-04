@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:open_weather_app/location_helper.dart';
 import 'package:open_weather_app/presentation/home/home_view.dart';
-import 'package:open_weather_app/repository/fetch_data.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -20,6 +19,7 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       theme: ThemeData(primarySwatch: Colors.blue, fontFamily: 'Barlow'),
       home: const HomeView(),
+      debugShowCheckedModeBanner: false,
     );
   }
 }
