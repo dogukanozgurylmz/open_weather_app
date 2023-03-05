@@ -9,17 +9,19 @@ class WindModel {
     required this.gust,
   });
 
-  WindModel.fromJson(Map<String, dynamic> json) {
-    speed = json['speed'];
-    deg = json['deg'];
-    gust = json['gust'];
+  factory WindModel.fromJson(Map<String, dynamic> json) {
+    return WindModel(
+      speed: json['speed'],
+      deg: json['deg'],
+      gust: json['gust'],
+    );
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['speed'] = speed;
-    data['deg'] = deg;
-    data['gust'] = gust;
-    return data;
+    return <String, dynamic>{
+      'speed': speed,
+      'deg': deg,
+      'gust': gust,
+    };
   }
 }

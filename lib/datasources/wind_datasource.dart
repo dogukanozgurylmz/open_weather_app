@@ -15,14 +15,10 @@ class WindDatasource implements WindDatasourceAbstract {
     final response = await http.get(uri);
     String data = response.body;
     var json = jsonDecode(data);
-    WindModel windModel = WindModel(
-      speed: json['wind']['speed'],
-      deg: json['wind']['deg'],
-      gust: json['wind']['gust'],
-    );
     if (json == null) {
       throw Exception("Not Data");
     }
+    WindModel windModel = WindModel.fromJson(json['wind']);
     return windModel;
   }
 }

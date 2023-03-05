@@ -16,17 +16,10 @@ class MainDatasource implements MainDatasourceAbstract {
     final response = await http.get(uri);
     String data = response.body;
     var json = jsonDecode(data);
-    MainModel mainModel = MainModel(
-      temp: json['main']['temp'],
-      feelsLike: json['main']['feelsLike'],
-      tempMin: json['main']['tempMin'],
-      tempMax: json['main']['tempMax'],
-      pressure: json['main']['pressure'],
-      humidity: json['main']['humidity'],
-    );
     if (json == null) {
       throw Exception("Not Data");
     }
+    MainModel mainModel = MainModel.fromJson(json['main']);
     return mainModel;
   }
 }

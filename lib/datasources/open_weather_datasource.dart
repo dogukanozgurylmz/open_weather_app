@@ -15,19 +15,11 @@ class OpenWeatherDatasource implements OpenWeatherDatasourceAbstract {
     final response = await http.get(uri);
     String data = response.body;
     var json = jsonDecode(data);
-    OpenWeatherModel openWeatherModel = OpenWeatherModel(
-      weather: json['weather'][0],
-      main: json['main'],
-      wind: json['wind'],
-      timezone: json['timezone'],
-      id: json['id'],
-      name: json['name'],
-      cod: json['cod'],
-      dt: json['dt'],
-    );
-    if (openWeatherModel == null) {
+    if (json == null) {
       throw Exception("Not Data");
     }
+    OpenWeatherModel openWeatherModel = OpenWeatherModel.fromJson(json);
+
     return openWeatherModel;
   }
 }

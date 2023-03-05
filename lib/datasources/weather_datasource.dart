@@ -19,12 +19,7 @@ class WeatherDatasource implements WeatherDatasourceAbstract {
       if (response.statusCode == 200) {
         String data = response.body;
         var json = jsonDecode(data);
-        WeatherModel weatherModel = WeatherModel(
-          id: json['weather'][0]['id'],
-          main: json['weather'][0]['main'],
-          description: json['weather'][0]['description'],
-          icon: json['weather'][0]['icon'],
-        );
+        WeatherModel weatherModel = WeatherModel.fromJson(json['weather'][0]);
         if (weatherModel.toString().isNotEmpty) {
           return weatherModel;
         } else {
