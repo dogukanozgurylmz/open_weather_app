@@ -1,173 +1,108 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:open_weather_app/location_helper.dart';
 
 import 'package:open_weather_app/model/main_model.dart';
 import 'package:open_weather_app/model/wind_model.dart';
-import 'package:open_weather_app/repository/main_fetch.dart';
-import 'package:open_weather_app/repository/openweather_fetch.dart';
-import 'package:open_weather_app/repository/weather_fetch.dart';
-import 'package:open_weather_app/repository/wind_fetch.dart';
-
-import '../../model/open_weather_model.dart';
 import '../../model/weather_model.dart';
+import 'cubit/home_cubit.dart';
 
-class HomeView extends StatefulWidget {
+class HomeView extends StatelessWidget {
   const HomeView({super.key});
 
   @override
-  State<HomeView> createState() => _HomeViewState();
-}
-
-class _HomeViewState extends State<HomeView> {
-  late WeatherFetch weatherFetch;
-  late MainFetch mainFetch;
-  late OpenWeatherFetch openWeatherFetch;
-  late WindFetch windFetch;
-  OpenWeatherModel? openWeatherModel;
-  WeatherModel? weatherModel;
-  MainModel? mainModel;
-  WindModel? windModel;
-  late DateTime dt;
-  bool isLoading = true;
-
-  Future<void> _fetchData() async {
-    weatherModel = await weatherFetch.fetchData();
-    openWeatherModel = await openWeatherFetch.fetchData();
-    mainModel = await mainFetch.fetchData();
-    windModel = await windFetch.fetchData();
-    changeLoading();
-  }
-
-  void changeLoading() {
-    setState(() {
-      isLoading = false;
-    });
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    weatherFetch = WeatherFetch();
-    openWeatherFetch = OpenWeatherFetch();
-    mainFetch = MainFetch();
-    windFetch = WindFetch();
-    _fetchData();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: isLoading
-          ? const Center(child: CircularProgressIndicator())
-          : PageView(
-              children: [
-                HomePage(
-                  weatherModel: weatherModel,
-                  mainModel: mainModel,
-                  openWeatherModel: openWeatherModel,
-                  windModel: windModel,
-                ),
-                HomePage(
-                  weatherModel: weatherModel,
-                  mainModel: mainModel,
-                  openWeatherModel: openWeatherModel,
-                  windModel: windModel,
-                ),
+    return BlocProvider(
+      create: (context) => HomeCubit(),
+      child: BlocBuilder<HomeCubit, HomeState>(
+        builder: (context, state) {
+          final cubit = context.read<HomeCubit>();
+          return Container(
+            decoration: const BoxDecoration(
+                gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: <Color>[
+                Color(0xff02001E),
+                Color(0xff05003F),
+                Color(0xff5b0060),
               ],
-            ),
-    );
-  }
-}
-
-class HomePage extends StatelessWidget {
-  const HomePage({
-    super.key,
-    required this.weatherModel,
-    required this.mainModel,
-    required this.openWeatherModel,
-    required this.windModel,
-  });
-
-  final WeatherModel? weatherModel;
-  final MainModel? mainModel;
-  final OpenWeatherModel? openWeatherModel;
-  final WindModel? windModel;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: const BoxDecoration(
-          gradient: LinearGradient(
-        begin: Alignment.topCenter,
-        end: Alignment.bottomCenter,
-        colors: <Color>[
-          Color(0xff02001E),
-          Color(0xff05003F),
-          Color(0xff5b0060),
-        ],
-        tileMode: TileMode.mirror,
-      )),
-      child: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
-          child: SingleChildScrollView(
-            physics: const AlwaysScrollableScrollPhysics(
-                parent: BouncingScrollPhysics()),
-            child: Column(
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    WeatherIconWidget(weatherModel: weatherModel!),
-                    Text(
-                      "${mainModel!.temp!.round()}°",
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 112,
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 10),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    // const Spacer(),
-                    Flexible(
-                      child: Text(
-                        overflow: TextOverflow.fade,
-                        "${weatherModel!.description}",
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 20,
+              tileMode: TileMode.mirror,
+            )),
+            child: state.isLoad
+                ? SafeArea(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 20, horizontal: 20),
+                      child: SingleChildScrollView(
+                        physics: const AlwaysScrollableScrollPhysics(
+                            parent: BouncingScrollPhysics()),
+                        child: Column(
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                WeatherIconWidget(
+                                    weatherModel: cubit.weatherModel!),
+                                Text(
+                                  "${cubit.mainModel!.temp!.round()}°",
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 112,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 10),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Flexible(
+                                  child: Text(
+                                    overflow: TextOverflow.fade,
+                                    "${cubit.weatherModel!.description}",
+                                    style: const TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 20,
+                                    ),
+                                  ),
+                                ),
+                                const Spacer(),
+                                Text(
+                                  "${cubit.openWeatherModel!.name}",
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 24,
+                                  ),
+                                ),
+                                const Icon(
+                                  Icons.location_on,
+                                  color: Colors.white,
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 24),
+                            WeatherDetails(
+                              mainModel: cubit.mainModel,
+                              windModel: cubit.windModel,
+                            ),
+                            const SizedBox(height: 30),
+                            const MapWidget()
+                          ],
                         ),
                       ),
                     ),
-                    const Spacer(),
-                    Text(
-                      "${openWeatherModel!.name}",
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 24,
-                      ),
-                    ),
-                    const Icon(
-                      Icons.location_on,
+                  )
+                : const Center(
+                    child: CircularProgressIndicator(
                       color: Colors.white,
                     ),
-                  ],
-                ),
-                const SizedBox(height: 24),
-                WeatherDetails(mainModel: mainModel, windModel: windModel),
-                const SizedBox(height: 30),
-                const MapWidget()
-              ],
-            ),
-          ),
-        ),
+                  ),
+          );
+        },
       ),
     );
   }

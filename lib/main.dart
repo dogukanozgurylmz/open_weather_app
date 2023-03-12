@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:open_weather_app/location_helper.dart';
 import 'package:open_weather_app/presentation/home/home_view.dart';
 
+import 'presentation/search/search_view.dart';
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   LocationHelper locationHelper = LocationHelper();
@@ -18,7 +20,10 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(primarySwatch: Colors.blue, fontFamily: 'Barlow'),
-      home: const HomeView(),
+      home: Scaffold(
+          body: PageView(
+        children: const [HomeView(), SearchView()],
+      )),
       debugShowCheckedModeBanner: false,
     );
   }
