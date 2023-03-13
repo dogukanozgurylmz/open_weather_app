@@ -29,7 +29,7 @@ class MainModel {
   Map<String, dynamic> toJson() {
     return <String, dynamic>{
       'temp': temp,
-      'feels_like': feelsLike,
+      'feels_like': feelsLike!.round(),
       'temp_min': tempMin,
       'temp_max': tempMax,
       'pressure': pressure,

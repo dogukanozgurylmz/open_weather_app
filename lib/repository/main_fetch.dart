@@ -7,9 +7,9 @@ class MainFetch extends BaseRepository<MainModel> {
   MainModel? _mainModel;
 
   @override
-  Future<MainModel?> fetchData() async {
+  Future<MainModel?> fetchData(String api) async {
     MainDatasource mainDatasource = MainDatasource();
-    _mainModel = await mainDatasource.getMain();
+    _mainModel = await mainDatasource.getMain(api);
     if (_mainModel == null) {
       throw Exception("Boş");
     }

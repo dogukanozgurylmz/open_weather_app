@@ -7,9 +7,9 @@ class WeatherFetch extends BaseRepository<WeatherModel> {
   WeatherModel? _weatherModel;
 
   @override
-  Future<WeatherModel?> fetchData() async {
+  Future<WeatherModel?> fetchData(String api) async {
     WeatherDatasource weatherDatasource = WeatherDatasource();
-    _weatherModel = await weatherDatasource.getWeather();
+    _weatherModel = await weatherDatasource.getWeather(api);
     if (_weatherModel == null) {
       throw Exception("Boş");
     }

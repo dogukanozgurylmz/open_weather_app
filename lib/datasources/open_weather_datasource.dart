@@ -5,12 +5,12 @@ import '../api_url.dart';
 import '../model/open_weather_model.dart';
 
 abstract class OpenWeatherDatasourceAbstract {
-  Future<OpenWeatherModel> getOpenWeather();
+  Future<OpenWeatherModel> getOpenWeather(String api);
 }
 
 class OpenWeatherDatasource implements OpenWeatherDatasourceAbstract {
   @override
-  Future<OpenWeatherModel> getOpenWeather() async {
+  Future<OpenWeatherModel> getOpenWeather(String api) async {
     final Uri uri = Uri.parse(ApiUrl.apiUrl);
     final response = await http.get(uri);
     String data = response.body;

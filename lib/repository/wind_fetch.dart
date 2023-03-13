@@ -7,9 +7,9 @@ class WindFetch extends BaseRepository<WindModel> {
   WindModel? _windModel;
 
   @override
-  Future<WindModel?> fetchData() async {
-    WindDatasource windDatasource = WindDatasource();
-    _windModel = await windDatasource.getWind();
+  Future<WindModel?> fetchData(String api) async {
+    WindDatasourceImpl windDatasource = WindDatasourceImpl();
+    _windModel = await windDatasource.getWind(api);
     if (_windModel == null) {
       throw Exception("Boş");
     }

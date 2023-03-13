@@ -1,3 +1,3 @@
 abstract class BaseRepository<TModel> {
-  Future<TModel?> fetchData();
+  Future<TModel?> fetchData(String api);
 }

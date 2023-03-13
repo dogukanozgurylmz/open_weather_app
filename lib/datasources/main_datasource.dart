@@ -6,12 +6,12 @@ import '../api_url.dart';
 import '../model/main_model.dart';
 
 abstract class MainDatasourceAbstract {
-  Future<MainModel> getMain();
+  Future<MainModel> getMain(String api);
 }
 
 class MainDatasource implements MainDatasourceAbstract {
   @override
-  Future<MainModel> getMain() async {
+  Future<MainModel> getMain(String api) async {
     final Uri uri = Uri.parse(ApiUrl.apiUrl);
     final response = await http.get(uri);
     String data = response.body;
